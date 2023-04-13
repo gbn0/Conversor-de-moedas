@@ -82,6 +82,7 @@ function updateConversion() {
     toAmountInput.value = toAmount.toFixed(2);
 }
 
+
 // Chama a API da Open Exchange Rates para obter as opções de moedas e as taxas de câmbio
 fetch(apiUrl)
     .then(response => response.json())
