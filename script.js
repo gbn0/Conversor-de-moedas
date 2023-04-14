@@ -1,84 +1,73 @@
-// URL da API da Open Exchange Rates
 const apiUrl = 'https://openexchangerates.org/api/latest.json?app_id=9ed905c6f16e4836a3832a63d5b929e6';
 
-// Elementos do DOM
 const fromAmountInput = document.getElementById('fromAmountInput');
 const toAmountInput = document.getElementById('toAmountInput');
-const fromCurrencySelect = document.getElementById('fromCurrencySelect');
-const toCurrencySelect = document.getElementById('toCurrencySelect');
+const MoedaInSelect = document.getElementById('MoedaInSelect');
+const MoedaOutSelect = document.getElementById('MoedaOutSelect');
 
-// Variáveis de conversão de moedas
-let exchangeRates = {}; // Objeto para armazenar as taxas de câmbio
-let fromCurrency = ''; // Moeda de origem
-let toCurrency = ''; // Moeda de destino
+let taxas = {};
+let MoedaIn = '';
+let MoedaOut = '';
 
 // Event listeners
-fromCurrencySelect.addEventListener('change', handleCurrencyChange);
-toCurrencySelect.addEventListener('change', handleCurrencyChange);
-fromAmountInput.addEventListener('input', updateConversion);
+MoedaInSelect.addEventListener('change', handleMudarMoeda);
+MoedaOutSelect.addEventListener('change', handleMudarMoeda);
+fromAmountInput.addEventListener('input', updateConversao);
 
 
 
 
-function invertCurrencies() {
-    // Obtenha o valor atual de cada select
-    var fromCurrencySelect = document.getElementById('fromCurrencySelect');
-    var toCurrencySelect = document.getElementById('toCurrencySelect');
+function inverterMoedas() {
+    var MoedaInSelect = document.getElementById('MoedaInSelect');
+    var MoedaOutSelect = document.getElementById('MoedaOutSelect');
 
-    // Obtem os valores
-    var fromCurrency = fromCurrencySelect.value;
-    var toCurrency = toCurrencySelect.value;
+    var MoedaIn = MoedaInSelect.value;
+    var MoedaOut = MoedaOutSelect.value;
 
-    // Inverte os valores
-    fromCurrencySelect.value = toCurrency;
-    toCurrencySelect.value = fromCurrency;
+    MoedaInSelect.value = MoedaOut;
+    MoedaOutSelect.value = MoedaIn;
 
-    handleCurrencyChange();
+    handleMudarMoeda();
 }
 
-// Carrega os tipos de moeda nos selects
-function loadCurrencyOptions(currencies) {
-    const options = Object.keys(currencies);
+function carregarMoedas(moedas) {
+    const options = Object.keys(moedas);
     options.forEach(option => {
         const fromOption = document.createElement('option');
         const toOption = document.createElement('option');
         fromOption.textContent = option;
         toOption.textContent = option;
-        fromCurrencySelect.appendChild(fromOption);
-        toCurrencySelect.appendChild(toOption);
+        MoedaInSelect.appendChild(fromOption);
+        MoedaOutSelect.appendChild(toOption);
     });
 }
 
-// Função pra quando muda a moeda selecionada
-function handleCurrencyChange() {
-    fromCurrency = fromCurrencySelect.value;
-    toCurrency = toCurrencySelect.value;
+function handleMudarMoeda() {
+    MoedaIn = MoedaInSelect.value;
+    MoedaOut = MoedaOutSelect.value;
 
-    // Vê se a mesma moeda foi selecionada dos 2 lados
-    if (fromCurrency === toCurrency) {
+    if (MoedaIn === MoedaOut) {
         toAmountInput.value = fromAmountInput.value;
         return;
     }
 
-    updateConversion();
+    updateConversao();
 }
 
 
-// Função para atualizar a conversão de moedas
-function updateConversion() {
+function updateConversao() {
     const fromAmount = fromAmountInput.value;
 
     // Verifica se as taxas de câmbio foram carregadas
-    if (!exchangeRates || !exchangeRates[fromCurrency] || !exchangeRates[toCurrency]) {
+    if (!taxas || !taxas[MoedaIn] || !taxas[MoedaOut]) {
         console.error('Taxas de câmbio não carregadas corretamente.');
         return;
     }
 
-    const fromRate = exchangeRates[fromCurrency];
-    const toRate = exchangeRates[toCurrency];
-    const toAmount = fromAmount * (toRate / fromRate);
+    const taxaIn = taxas[MoedaIn];
+    const taxaOut = taxas[MoedaOut];
+    const toAmount = fromAmount * (taxaOut / taxaIn);
 
-    // Atualiza o valor na caixa de resultado
     toAmountInput.value = toAmount.toFixed(2);
 }
 
@@ -87,9 +76,9 @@ function updateConversion() {
 fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
-        exchangeRates = data.rates;
-        loadCurrencyOptions(exchangeRates); // Chama a função para carregar as opções de moedas nos seletores
-        handleCurrencyChange(); // Chama a função para atualizar a conversão de moedas
+        taxas = data.rates;
+        carregarMoedas(taxas);
+        handleMudarMoeda();
     })
     .catch(error => {
         console.error('Erro ao obter as moedas:', error);

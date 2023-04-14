@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conversor de Moedas</title>
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
@@ -10,19 +13,18 @@
     <div class="container">
         <div class="input-container">
             <input type="number" id="fromAmountInput" placeholder="Digite um valor"class="input" step="0.01">
-            <select id="fromCurrencySelect" class="select">
+            <select id="MoedaInSelect" class="select">
                 <option value="BRL" selected>BRL</option>
             </select>
         </div>
-        <!-- Adicione este botão após os contêineres de entrada e saída -->
         <div class="btn-container">
-            <button id="invertBtn" onclick="invertCurrencies()">
+            <button id="invertBtn" onclick="inverterMoedas()">
                 <img src="images/Seta.png" alt="Inverter">
             </button>
         </div>
         <div class="output-container">
-            <input type="number" id="toAmountInput" class="input">
-            <select id="toCurrencySelect" class="select">
+            <input type="text" id="toAmountInput" class="input" readonly>
+            <select id="MoedaOutSelect" class="select">
                 <option value="USD" selected>USD</option>
             </select>
         </div>
