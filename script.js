@@ -18,11 +18,9 @@ fromAmountInput.addEventListener('input', updateConversao);
 
 
 function inverterMoedas() {
-    var MoedaInSelect = document.getElementById('MoedaInSelect');
-    var MoedaOutSelect = document.getElementById('MoedaOutSelect');
 
-    var MoedaIn = MoedaInSelect.value;
-    var MoedaOut = MoedaOutSelect.value;
+    MoedaIn = MoedaInSelect.value;
+    MoedaOut = MoedaOutSelect.value;
 
     MoedaInSelect.value = MoedaOut;
     MoedaOutSelect.value = MoedaIn;
