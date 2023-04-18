@@ -19,9 +19,11 @@ fromAmountInput.addEventListener('input', updateConversao);
 //Função do botão de inverter as moedas
 function inverterMoedas() {
 
+    //Guarda os valores de cada moeda selecionada
     MoedaIn = MoedaInSelect.value;
     MoedaOut = MoedaOutSelect.value;
 
+    //Inverte os valores
     MoedaInSelect.value = MoedaOut;
     MoedaOutSelect.value = MoedaIn;
 
@@ -30,6 +32,7 @@ function inverterMoedas() {
 
 //Função para carregar as moedas obtidas do fetch nos selects
 function carregarMoedas(moedas) {
+    //Cria uma opção para cada uma das taxas e coloca dentro dos selects com o appendChild
     const options = Object.keys(moedas);
     options.forEach(option => {
         const fromOption = document.createElement('option');
@@ -43,6 +46,7 @@ function carregarMoedas(moedas) {
 
 //Função para atualizar a moeda quando troca a selecionada no select
 function handleMudarMoeda() {
+    //Pega as moedas que estão selecionadas para pegar as suas respectivas taxas depois
     MoedaIn = MoedaInSelect.value;
     MoedaOut = MoedaOutSelect.value;
 
@@ -65,6 +69,7 @@ function updateConversao() {
         return;
     }
 
+    //Pega as taxas e faz a conversão
     const taxaIn = taxas[MoedaIn];
     const taxaOut = taxas[MoedaOut];
     const toAmount = fromAmount * (taxaOut / taxaIn);
