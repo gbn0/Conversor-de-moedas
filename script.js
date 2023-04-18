@@ -1,22 +1,22 @@
 const apiUrl = 'https://openexchangerates.org/api/latest.json?app_id=9ed905c6f16e4836a3832a63d5b929e6';
 
+//Elementos do DOM, ou seja, pegando os elementos do HTML
 const fromAmountInput = document.getElementById('fromAmountInput');
 const toAmountInput = document.getElementById('toAmountInput');
 const MoedaInSelect = document.getElementById('MoedaInSelect');
 const MoedaOutSelect = document.getElementById('MoedaOutSelect');
 
+//Outras variáveis
 let taxas = {};
 let MoedaIn = '';
 let MoedaOut = '';
 
-// Event listeners
+//EventListeners para mudar o valor automaticamente toda vez que mudar a moeda ou o valor de input
 MoedaInSelect.addEventListener('change', handleMudarMoeda);
 MoedaOutSelect.addEventListener('change', handleMudarMoeda);
 fromAmountInput.addEventListener('input', updateConversao);
 
-
-
-
+//Função do botão de inverter as moedas
 function inverterMoedas() {
 
     MoedaIn = MoedaInSelect.value;
@@ -28,6 +28,7 @@ function inverterMoedas() {
     handleMudarMoeda();
 }
 
+//Função para carregar as moedas obtidas do fetch nos selects
 function carregarMoedas(moedas) {
     const options = Object.keys(moedas);
     options.forEach(option => {
@@ -40,10 +41,12 @@ function carregarMoedas(moedas) {
     });
 }
 
+//Função para atualizar a moeda quando troca a selecionada no select
 function handleMudarMoeda() {
     MoedaIn = MoedaInSelect.value;
     MoedaOut = MoedaOutSelect.value;
 
+    //Verifica se a moeda de entrada é a mesma de saída
     if (MoedaIn === MoedaOut) {
         toAmountInput.value = fromAmountInput.value;
         return;
@@ -52,11 +55,11 @@ function handleMudarMoeda() {
     updateConversao();
 }
 
-
+//Função que calcula a conversão
 function updateConversao() {
     const fromAmount = fromAmountInput.value;
 
-    // Verifica se as taxas de câmbio foram carregadas
+    //Verifica se as taxas foram carregadas corretamente
     if (!taxas || !taxas[MoedaIn] || !taxas[MoedaOut]) {
         console.error('Taxas de câmbio não carregadas corretamente.');
         return;
@@ -66,6 +69,7 @@ function updateConversao() {
     const taxaOut = taxas[MoedaOut];
     const toAmount = fromAmount * (taxaOut / taxaIn);
 
+    //Limita as casas decimais para 2
     toAmountInput.value = toAmount.toFixed(2);
 }
 

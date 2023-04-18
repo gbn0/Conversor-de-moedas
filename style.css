@@ -87,8 +87,7 @@ input {
 }
 
 select,
-input[type="number"],
-input[type="text"] {
+input{
     width: 100%;
     padding: 10px;
     border: none;
